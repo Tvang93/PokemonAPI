@@ -1,4 +1,5 @@
 const searchBarField = document.getElementById("searchBarField");
+const img1 = document.getElementById("img1");
 
 searchBarField.addEventListener("keypress", async (event) => {
   let entry = searchBarField.value;
@@ -6,36 +7,33 @@ searchBarField.addEventListener("keypress", async (event) => {
     let pokeInfo = await GetPokemon(entry);
     console.log(pokeInfo);
     if (pokeInfo.id != null) {
-      console.log(pokeInfo);
+      //Pokemon Info
       console.log(pokeInfo.name);
       console.log(pokeInfo.id);
-      console.log(pokeInfo.moves);
-      console.log(GetMoveName(pokeInfo.moves, "move"));
-      console.log(GetMoveName(pokeInfo.abilities, "ability"));
-      console.log(GetMoveName(pokeInfo.types, "type"));
+      console.log(GetMovesOrAblities(pokeInfo, "moves", "move", "name"));
+      console.log(GetMovesOrAblities(pokeInfo, "abilities", "ability", "name"));
+
       console.log(pokeInfo.location_area_encounters);
+      img1.src = pokeInfo.sprites.other["official-artwork"].front_default;
+
+      //Locations
       let locations = await GetApiwithUrl(pokeInfo.location_area_encounters);
       if (location.length > 0) {
         console.log(locations[0].location_area.name);
       } else {
         console.log("n/a");
       }
+
+      //Evolution
       let pokeSpecies = await GetSpeciesApiWithId(pokeInfo.id);
       let pokeEvolution = await GetApiwithUrl(pokeSpecies.evolution_chain.url);
-      console.log(pokeEvolution);
       console.log(pokeEvolution.chain.species.name);
       if (pokeEvolution.chain.evolves_to.length > 0) {
         for (let i = 0; i < pokeEvolution.chain.evolves_to.length; i++) {
           console.log(pokeEvolution.chain.evolves_to[i].species.name);
           if (pokeEvolution.chain.evolves_to[i].evolves_to.length > 0) {
-            for (
-              let j = 0;
-              j < pokeEvolution.chain.evolves_to[i].evolves_to.length;
-              j++
-            )
-              console.log(
-                pokeEvolution.chain.evolves_to[i].evolves_to[j].species.name
-              );
+            for (let j = 0; j < pokeEvolution.chain.evolves_to[i].evolves_to.length; j++)
+              console.log(pokeEvolution.chain.evolves_to[i].evolves_to[j].species.name);
           }
         }
       }
@@ -56,13 +54,8 @@ const GetPokemon = async (pokename) => {
   }
 };
 
-const GetMoveName = (array, thing) => {
-  let newArr = [];
-  array.forEach((element) => {
-    newArr.push(element[`${thing}`].name);
-  });
-  return newArr.join(", ");
-};
+const GetMovesOrAblities = (array, var1, var2, var3) =>
+  array[`${var1}`].map((moves) => moves[`${var2}`][`${var3}`]).join(", ");
 
 const GetApiwithUrl = async (url) => {
   const promise = await fetch(url);
