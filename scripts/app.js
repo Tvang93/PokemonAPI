@@ -1,10 +1,12 @@
 const searchBarField = document.getElementById("searchBarField");
 const img1 = document.getElementById("img1");
 
+let pokeInfo;
+
 searchBarField.addEventListener("keypress", async (event) => {
   let entry = searchBarField.value;
   if (event.key === "Enter") {
-    let pokeInfo = await GetPokemon(entry);
+    pokeInfo = await GetPokemon(entry);
     console.log(pokeInfo);
     if (pokeInfo.id != null) {
       //Pokemon Info
@@ -12,8 +14,6 @@ searchBarField.addEventListener("keypress", async (event) => {
       console.log(pokeInfo.id);
       console.log(GetMovesOrAblities(pokeInfo, "moves", "move", "name"));
       console.log(GetMovesOrAblities(pokeInfo, "abilities", "ability", "name"));
-
-      console.log(pokeInfo.location_area_encounters);
       img1.src = pokeInfo.sprites.other["official-artwork"].front_default;
 
       //Locations
@@ -40,6 +40,10 @@ searchBarField.addEventListener("keypress", async (event) => {
     }
   }
 });
+
+img1.addEventListener("click", async () => {
+    SwapImg();
+})
 
 const GetPokemon = async (pokename) => {
   const promise = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokename}/`);
@@ -70,3 +74,13 @@ const GetSpeciesApiWithId = async (id) => {
   const data = promise.json();
   return data;
 };
+
+const SwapImg = () => {
+    if(img1.src == pokeInfo.sprites.other["official-artwork"].front_default){
+        img1.src = pokeInfo.sprites.other["official-artwork"].front_shiny;
+        console.log("shiny")
+    }else{
+        img1.src = pokeInfo.sprites.other["official-artwork"].front_default
+        console.log("default")
+    }
+}
