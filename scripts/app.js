@@ -3,8 +3,6 @@ const searchBarField = document.getElementById("searchBarField");
 searchBarField.addEventListener("keypress", async (event) => {
   let entry = searchBarField.value;
   if (event.key === "Enter") {
-    // let nameOrNum = parseInt(entry);
-    // nameOrNum ? GetPokemonWithName()
     let pokeInfo = await GetPokemon(entry);
     console.log(pokeInfo);
     if (pokeInfo.id != null) {
@@ -30,9 +28,14 @@ searchBarField.addEventListener("keypress", async (event) => {
         for (let i = 0; i < pokeEvolution.chain.evolves_to.length; i++) {
           console.log(pokeEvolution.chain.evolves_to[i].species.name);
           if (pokeEvolution.chain.evolves_to[i].evolves_to.length > 0) {
-            console.log(
-              pokeEvolution.chain.evolves_to[0].evolves_to[0].species.name
-            );
+            for (
+              let j = 0;
+              j < pokeEvolution.chain.evolves_to[i].evolves_to.length;
+              j++
+            )
+              console.log(
+                pokeEvolution.chain.evolves_to[i].evolves_to[j].species.name
+              );
           }
         }
       }
@@ -41,26 +44,15 @@ searchBarField.addEventListener("keypress", async (event) => {
 });
 
 const GetPokemon = async (pokename) => {
-  let nameOrNum = parseInt(pokename);
-  console.log(nameOrNum);
-  if (nameOrNum >= 650) {
-    return "Invalid Entry. Please type in a pokemon between Gen 1 and 5.";
-  } else if (nameOrNum < 650) {
-    const promise = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${nameOrNum}/`
-    );
-    const data = await promise.json();
-    return data;
+  const promise = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokename}/`);
+  if (!promise.ok) {
+    alert("Invalid Entry. Please type in a pokemon between Gen 1 and 5.");
   } else {
-    const promise = await fetch(
-      `https://pokeapi.co/api/v2/pokemon/${pokename}/`
-    );
-    if (!promise.ok) {
-      return "Invalid Entry. Please type in a pokemon between Gen 1 and 5.";
-    } else {
-      const data = await promise.json();
-      return data;
+    const data = await promise.json();
+    if (data.id >= 650) {
+      alert("Invalid Entry. Please type in a pokemon between Gen 1 and 5.");
     }
+    return data;
   }
 };
 
