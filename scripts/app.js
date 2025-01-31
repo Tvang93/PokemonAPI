@@ -1,6 +1,8 @@
 const favoriteTabBtn = document.getElementById("favoriteTabBtn");
 const randomBtn = document.getElementById("randomBtn");
 const searchBarField = document.getElementById("searchBarField");
+const searchBtn = document.getElementById("searchBtn");
+
 const pokeName = document.getElementById("pokeName");
 const pokeId = document.getElementById("pokeId");
 const img1 = document.getElementById("img1");
@@ -12,12 +14,22 @@ const locations = document.getElementById("locations");
 let pokeInfo;
 let entry;
 
+randomBtn.addEventListener("click", async () => {
+    let random = Math.ceil(Math.random()*649);
+    GetPokemon(random);
+})
+
 searchBarField.addEventListener("keypress", async (event) => {
     entry = searchBarField.value;
     if (event.key === "Enter") {
-    GetPokemon(entry.trim().toLowerCase())
-  }
+        GetPokemon(entry.trim().toLowerCase())
+    }
 });
+
+searchBtn.addEventListener("click", async () => {
+    entry = searchBarField.value;
+    GetPokemon(entry.trim().toLowerCase())
+})
 
 img1.addEventListener("click", async () => {
   SwapImg();
