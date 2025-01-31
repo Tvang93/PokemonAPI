@@ -27,9 +27,9 @@ const FindPokemonEvolutions = async(pokemon) => {
 
 const FirstStagePokemon = async(pokemon) => {
     await FindPokemonEvolutions(pokemon);
-    CreateEvoIcons(firstStage);
-    CreateEvoIcons(midStage);
-    CreateEvoIcons(finalStage);
+    await CreateEvoIcons(firstStage);
+    await CreateEvoIcons(midStage);
+    await CreateEvoIcons(finalStage);
 }
 
 const EvolutionLine = async(pokeman) => {
