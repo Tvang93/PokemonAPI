@@ -1,4 +1,5 @@
 import {GetPokemonInfo, GetApiwithUrl, GetSpeciesApiWithId} from "../DataServices/services.js"
+import {GetTypeIcon} from "./pokemonTypes.js"
 
 const favoriteTabBtn = document.getElementById("favoriteTabBtn");
 const randomBtn = document.getElementById("randomBtn");
@@ -13,6 +14,10 @@ const secondaryType = document.getElementById("secondaryType");
 const pokeType = [
     document.getElementById("pokeType1"),
     document.getElementById("pokeType2"),
+]
+const pokeTypeImg = [
+    document.getElementById("typeImg"),
+    document.getElementById("type2Img"),
 ]
 
 const moves = document.getElementById("moves");
@@ -93,13 +98,14 @@ const GetPokemonType = (data) => {
     console.log(pokeType[0].innerText)
     for(let i = 0; i < typeArr.length;i++){
         pokeType[i].innerText = typeArr[i];
+        let var1 = pokeType[i].innerText;
+        let var2 = pokeTypeImg[i];
+        GetTypeIcon(var1, var2)
     }
     if(typeArr.length>1){
         secondaryType.classList.remove("hidden")
     }
 }
-
-
 
 
 const FindPokemonLocations = async(url) => {
