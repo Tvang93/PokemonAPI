@@ -27,6 +27,10 @@ Pokemon API Challenge
         Have a Prototype in Figma (Desktop, Tablet, Mobile)
 
 ### Figma
+https://www.figma.com/design/YAcbIEAs6E8c18GKTALVet/Weather?node-id=205-2&t=CNrOM2Y9OBCd4kuB-1
+
+### Vercel
+https://pokemon-api-henna-three.vercel.app/
 
 ### Peer Review
 by: Hassan Sajid
