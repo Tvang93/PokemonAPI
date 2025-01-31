@@ -87,7 +87,6 @@ const GetPokemon = async (pokemon) => {
   }
 };
 
-
 // const PokeNameOrNum = (pokemon) => {
 //     let pokeNum = parseInt(pokemon)
 //     if(pokeNum != NaN){
@@ -99,7 +98,6 @@ const GetPokemon = async (pokemon) => {
 //         return GetPokemonInfo(pokemon);
 //     }
 // }
-
 
 const MapThroughData = (object, var1, var2, var3) =>
   object[`${var1}`].map((arr) => arr[`${var2}`][`${var3}`]);
@@ -127,7 +125,6 @@ const IsFavoriteActive = (pokemon) => {
     }
 }
 
-
 const CreateFavoritesTab = () => {
     favoritesSelection.innerHTML = "";
     let favoritesList = GetFavoritesFromLocalStorage();
@@ -143,23 +140,6 @@ const CreateFavoritesTab = () => {
       favoritesSelection.appendChild(favoritesName);
     });
   };
-
-
-
-// const FindPokemonEvolutions = async(pokemon) => {
-//     let pokeSpecies = await GetSpeciesApiWithId(pokemon);
-//     let pokeEvolution = await GetApiwithUrl(pokeSpecies.evolution_chain.url);
-//     console.log(pokeEvolution.chain.species.name);
-//     if (pokeEvolution.chain.evolves_to.length > 0) {
-//       for (let i = 0; i < pokeEvolution.chain.evolves_to.length; i++) {
-//         console.log(pokeEvolution.chain.evolves_to[i].species.name);
-//         if (pokeEvolution.chain.evolves_to[i].evolves_to.length > 0) {
-//           for (let j = 0; j < pokeEvolution.chain.evolves_to[i].evolves_to.length; j++)
-//             console.log(pokeEvolution.chain.evolves_to[i].evolves_to[j].species.name);
-//         }
-//       }
-//     }
-// }
 
 const SwapImg = () => {
   if (img1.src == pokeInfo.sprites.other["official-artwork"].front_default) {
