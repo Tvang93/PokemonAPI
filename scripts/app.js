@@ -1,12 +1,16 @@
 import {GetPokemonInfo, GetApiwithUrl, GetSpeciesApiWithId} from "../DataServices/services.js"
 import {GetPokemonType} from "./pokemonTypes.js"
-import {FindPokemonEvolutions} from "./pokemonEvolutions.js"
+import {FindPokemonEvolutions, EvolutionLine} from "./pokemonEvolutions.js"
+import {SaveToFavoritePokemons, GetFavoritesFromLocalStorage, RemoveFromFavorites, CheckFavoritePokemons} from "./localStorage.js"
 
 const favoriteTabBtn = document.getElementById("favoriteTabBtn");
+const favoritesSelection = document.getElementById("favoritesSelection");
 const randomBtn = document.getElementById("randomBtn");
 const searchBarField = document.getElementById("searchBarField");
 const searchBtn = document.getElementById("searchBtn");
 
+const notFav = document.getElementById("notFav");
+const isFav = document.getElementById("isFav");
 const pokeName = document.getElementById("pokeName");
 const pokeId = document.getElementById("pokeId");
 const img1 = document.getElementById("img1");
@@ -19,6 +23,22 @@ const locations = document.getElementById("locations");
 
 let pokeInfo;
 let entry;
+
+favoriteTabBtn.addEventListener("click", () => {
+    CreateFavoritesTab();
+})
+
+notFav.addEventListener("click", () => {
+    SaveToFavoritePokemons(pokeName.innerText);
+    isFav.classList.remove("hidden")
+    notFav.classList.add("hidden")
+})
+
+isFav.addEventListener("click", () => {
+    RemoveFromFavorites(pokeName.innerText);
+    notFav.classList.remove("hidden")
+    isFav.classList.add("hidden")
+})
 
 randomBtn.addEventListener("click", async () => {
     let random = Math.ceil(Math.random()*649);
@@ -60,7 +80,10 @@ const GetPokemon = async (pokemon) => {
     FindPokemonLocations(pokeInfo.location_area_encounters);
 
     //Evolution
-    FindPokemonEvolutions(pokeInfo.id);
+    EvolutionLine(pokeInfo.id);
+
+    //Check Favorites
+    IsFavoriteActive(CapitalizeFirstLetter(pokeInfo.name))
   }
 };
 
@@ -93,6 +116,35 @@ const FindPokemonLocations = async(url) => {
       locations.innerText = "N/A";
     }
 }
+
+const IsFavoriteActive = (pokemon) => {
+    if(CheckFavoritePokemons(pokemon)){
+        isFav.classList.remove("hidden")
+        notFav.classList.add("hidden")
+    }else{
+        notFav.classList.remove("hidden")
+        isFav.classList.add("hidden")
+    }
+}
+
+
+const CreateFavoritesTab = () => {
+    favoritesSelection.innerHTML = "";
+    let favoritesList = GetFavoritesFromLocalStorage();
+    
+    favoritesList.map((favorite) => {
+      let favoritesName = document.createElement("p");
+      favoritesName.innerText = favorite;
+      favoritesName.classList = "favorites-class";
+      favoritesName.addEventListener("click", function () {
+        let favPokemon = favoritesName.innerText;
+        GetPokemon(favPokemon);
+      });
+      favoritesSelection.appendChild(favoritesName);
+    });
+  };
+
+
 
 // const FindPokemonEvolutions = async(pokemon) => {
 //     let pokeSpecies = await GetSpeciesApiWithId(pokemon);

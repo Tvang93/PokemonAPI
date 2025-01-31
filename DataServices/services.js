@@ -11,6 +11,12 @@ const GetPokemonInfo = async (pokename) => {
   }
 };
 
+const GetPokemonInfoNoRestriction = async(pokemon) => {
+  const promise = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}/`);
+  const data = await promise.json()
+  return data
+} 
+
 const GetApiwithUrl = async (url) => {
   const promise = await fetch(url);
   const data = promise.json();
@@ -24,4 +30,4 @@ const GetSpeciesApiWithId = async (id) => {
 };
 
 
-export {GetPokemonInfo, GetApiwithUrl, GetSpeciesApiWithId}
+export {GetPokemonInfo, GetApiwithUrl, GetSpeciesApiWithId, GetPokemonInfoNoRestriction}
