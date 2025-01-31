@@ -1,3 +1,5 @@
+import {GetPokemonInfo, GetApiwithUrl, GetSpeciesApiWithId} from "../DataServices/services.js"
+
 const favoriteTabBtn = document.getElementById("favoriteTabBtn");
 const randomBtn = document.getElementById("randomBtn");
 const searchBarField = document.getElementById("searchBarField");
@@ -7,6 +9,12 @@ const pokeName = document.getElementById("pokeName");
 const pokeId = document.getElementById("pokeId");
 const img1 = document.getElementById("img1");
 const form = document.getElementById("form");
+const secondaryType = document.getElementById("secondaryType");
+const pokeType = [
+    document.getElementById("pokeType1"),
+    document.getElementById("pokeType2"),
+]
+
 const moves = document.getElementById("moves");
 const abilities = document.getElementById("abilities");
 const locations = document.getElementById("locations");
@@ -42,85 +50,81 @@ const GetPokemon = async (pokemon) => {
     //Pokemon Info
     pokeName.innerText = `${pokeInfo.name.charAt(0).toUpperCase()}${pokeInfo.name.slice(1)}`;
     pokeId.innerText = pokeInfo.id.toString().padStart(3, '0');
-    moves.innerText = GetMovesOrAblities(pokeInfo, "moves", "move", "name");
-    abilities.innerText = GetMovesOrAblities(pokeInfo, "abilities", "ability", "name");
-    console.log(GetMovesOrAblities(pokeInfo, "types", "type", "name"));
+    moves.innerText = MapThroughData(pokeInfo, "moves", "move", "name").join(", ");
+    abilities.innerText = MapThroughData(pokeInfo, "abilities", "ability", "name").join(", ");
+    console.log(MapThroughData(pokeInfo, "types", "type", "name"));
+    GetPokemonType(pokeInfo);
 
     img1.src = pokeInfo.sprites.other["official-artwork"].front_default;
     form.innerText = "Form: Default"
 
     //Locations
-    let pokeLocations = await GetApiwithUrl(pokeInfo.location_area_encounters);
-    console.log(pokeInfo.location_area_encounters)
+    FindPokemonLocations(pokeInfo.location_area_encounters);
+
+    //Evolution
+    FindPokemonEvolutions(pokeInfo.id);
+  }
+};
+
+
+// const PokeNameOrNum = (pokemon) => {
+//     let pokeNum = parseInt(pokemon)
+//     if(pokeNum != NaN){
+        
+//         return GetPokemonInfo(pokeNum);
+//     }else{
+//         console.log(pokeNum)
+//         console.log(pokemon)
+//         return GetPokemonInfo(pokemon);
+//     }
+// }
+
+
+const MapThroughData = (object, var1, var2, var3) =>
+  object[`${var1}`].map((arr) => arr[`${var2}`][`${var3}`]);
+
+
+
+const GetPokemonType = (data) => {
+    secondaryType.classList.add("hidden")
+    let typeArr = MapThroughData(data, "types", "type", "name")
+    console.log(typeArr.length)
+    console.log(typeArr[0])
+    console.log(pokeType[0].innerText)
+    for(let i = 0; i < typeArr.length;i++){
+        pokeType[i].innerText = typeArr[i];
+    }
+    if(typeArr.length>1){
+        secondaryType.classList.remove("hidden")
+    }
+}
+
+
+
+
+const FindPokemonLocations = async(url) => {
+    let pokeLocations = await GetApiwithUrl(url);
     if (pokeLocations.length > 0) {
       locations.innerText = pokeLocations.map(arr => arr.location_area.name).join(", ");
     } else {
       locations.innerText = "N/A";
     }
+}
 
-    //Evolution
-    let pokeSpecies = await GetSpeciesApiWithId(pokeInfo.id);
+const FindPokemonEvolutions = async(pokemon) => {
+    let pokeSpecies = await GetSpeciesApiWithId(pokemon);
     let pokeEvolution = await GetApiwithUrl(pokeSpecies.evolution_chain.url);
     console.log(pokeEvolution.chain.species.name);
     if (pokeEvolution.chain.evolves_to.length > 0) {
       for (let i = 0; i < pokeEvolution.chain.evolves_to.length; i++) {
         console.log(pokeEvolution.chain.evolves_to[i].species.name);
         if (pokeEvolution.chain.evolves_to[i].evolves_to.length > 0) {
-          for (
-            let j = 0;
-            j < pokeEvolution.chain.evolves_to[i].evolves_to.length;
-            j++
-          )
-            console.log(
-              pokeEvolution.chain.evolves_to[i].evolves_to[j].species.name
-            );
+          for (let j = 0; j < pokeEvolution.chain.evolves_to[i].evolves_to.length; j++)
+            console.log(pokeEvolution.chain.evolves_to[i].evolves_to[j].species.name);
         }
       }
     }
-  }
-};
-
-const PokeNameOrNum = (pokemon) => {
-    let pokeNum = parseInt(pokemon)
-    if(pokeNum != NaN){
-        
-        return GetPokemonInfo(pokeNum);
-    }else{
-        console.log(pokeNum)
-        console.log(pokemon)
-        return GetPokemonInfo(pokemon);
-    }
 }
-
-const GetPokemonInfo = async (pokename) => {
-  const promise = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokename}/`);
-  if (!promise.ok) {
-    alert("Invalid Entry. Please type in a pokemon between Gen 1 and 5.");
-  } else {
-    const data = await promise.json();
-    if (data.id >= 650) {
-      alert("Invalid Entry. Please type in a pokemon between Gen 1 and 5.");
-    }
-    return data;
-  }
-};
-
-const GetMovesOrAblities = (object, var1, var2, var3) =>
-  object[`${var1}`].map((arr) => arr[`${var2}`][`${var3}`]).join(", ");
-
-const GetApiwithUrl = async (url) => {
-  const promise = await fetch(url);
-  const data = promise.json();
-  return data;
-};
-
-const GetSpeciesApiWithId = async (id) => {
-  const promise = await fetch(
-    `https://pokeapi.co/api/v2/pokemon-species/${id}/`
-  );
-  const data = promise.json();
-  return data;
-};
 
 const SwapImg = () => {
   if (img1.src == pokeInfo.sprites.other["official-artwork"].front_default) {
@@ -131,6 +135,5 @@ const SwapImg = () => {
     form.innerText = "Form: Default"
   }
 };
-
 
 // GetPokemon("1")
