@@ -29,7 +29,8 @@ Pokemon API Challenge
 ### Figma
 
 ### Peer Review
-by: 
+by: Hassan Sajid
+- Good job! Your project checks off every single box in the requirements. The randomize function works as well as the search input. The favorites work as well and it stays in my local storage upon refresh. I like how the elements have their own icons and I like your use case with the switch statement on that. I would recommend adding padding to make sure the text does not touch the boxes but other than that, good job! Everything looks and works.
 
 
 
