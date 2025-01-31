@@ -1,4 +1,4 @@
-import {GetPokemonInfo, GetApiwithUrl, GetSpeciesApiWithId} from "../DataServices/services.js"
+import {GetPokemonInfo, GetApiwithUrl, GetSpeciesApiWithId, GetPokemonInfoNoRestriction} from "../DataServices/services.js"
 import {GetPokemonType} from "./pokemonTypes.js"
 import {FindPokemonEvolutions, EvolutionLine} from "./pokemonEvolutions.js"
 import {SaveToFavoritePokemons, GetFavoritesFromLocalStorage, RemoveFromFavorites, CheckFavoritePokemons} from "./localStorage.js"
@@ -62,7 +62,10 @@ img1.addEventListener("click", async () => {
 });
 
 const GetPokemon = async (pokemon) => {
-  pokeInfo = await GetPokemonInfo(pokemon);
+  let check = await GetPokemonInfo(pokemon);
+  if(check.id != null && parseInt(check.id) < 650){
+    pokeInfo = check
+  }
   console.log(pokeInfo);
   if (pokeInfo.id != null && parseInt(pokeInfo.id) < 650) {
     //Pokemon Info
@@ -86,18 +89,6 @@ const GetPokemon = async (pokemon) => {
     IsFavoriteActive(CapitalizeFirstLetter(pokeInfo.name))
   }
 };
-
-// const PokeNameOrNum = (pokemon) => {
-//     let pokeNum = parseInt(pokemon)
-//     if(pokeNum != NaN){
-        
-//         return GetPokemonInfo(pokeNum);
-//     }else{
-//         console.log(pokeNum)
-//         console.log(pokemon)
-//         return GetPokemonInfo(pokemon);
-//     }
-// }
 
 const MapThroughData = (object, var1, var2, var3) =>
   object[`${var1}`].map((arr) => arr[`${var2}`][`${var3}`]);

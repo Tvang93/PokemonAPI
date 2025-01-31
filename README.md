@@ -35,4 +35,4 @@ by:
 
 
 # known issues:
-- any pokemon with entry greater than 649 still gather data and stores it. so if I type 745, it wont update the shown data with it but it still loads data, so if i click img i get pokemon 745.
+<!-- - any pokemon with entry greater than 649 still gather data and stores it. so if I type 745, it wont update the shown data with it but it still loads data, so if i click img i get pokemon 745. --> Fixed
