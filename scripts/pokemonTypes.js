@@ -1,3 +1,33 @@
+import {MapThroughData, CapitalizeFirstLetter} from "./app.js"
+
+const secondaryType = document.getElementById("secondaryType");
+const pokeType = [
+    document.getElementById("pokeType1"),
+    document.getElementById("pokeType2"),
+]
+const pokeTypeImg = [
+    document.getElementById("typeImg"),
+    document.getElementById("type2Img"),
+]
+
+const GetPokemonType = (data) => {
+    secondaryType.classList.add("hidden")
+    let typeArr = MapThroughData(data, "types", "type", "name")
+    console.log(typeArr.length)
+    console.log(typeArr[0])
+    console.log(pokeType[0].innerText)
+    for(let i = 0; i < typeArr.length;i++){
+        pokeType[i].innerText = CapitalizeFirstLetter(typeArr[i]);
+        let var1 = pokeType[i].innerText;
+        let var2 = pokeTypeImg[i];
+        GetTypeIcon(var1, var2)
+    }
+    if(typeArr.length>1){
+        secondaryType.classList.remove("hidden")
+    }
+}
+
+
 const GetTypeIcon = (type, var1) => {
     switch(type.toString().toLowerCase()){
         case "grass":
@@ -57,4 +87,4 @@ const GetTypeIcon = (type, var1) => {
     }
 }
 
-export {GetTypeIcon}
+export {GetPokemonType}

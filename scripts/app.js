@@ -1,5 +1,6 @@
 import {GetPokemonInfo, GetApiwithUrl, GetSpeciesApiWithId} from "../DataServices/services.js"
-import {GetTypeIcon} from "./pokemonTypes.js"
+import {GetPokemonType} from "./pokemonTypes.js"
+import {FindPokemonEvolutions} from "./pokemonEvolutions.js"
 
 const favoriteTabBtn = document.getElementById("favoriteTabBtn");
 const randomBtn = document.getElementById("randomBtn");
@@ -10,15 +11,7 @@ const pokeName = document.getElementById("pokeName");
 const pokeId = document.getElementById("pokeId");
 const img1 = document.getElementById("img1");
 const form = document.getElementById("form");
-const secondaryType = document.getElementById("secondaryType");
-const pokeType = [
-    document.getElementById("pokeType1"),
-    document.getElementById("pokeType2"),
-]
-const pokeTypeImg = [
-    document.getElementById("typeImg"),
-    document.getElementById("type2Img"),
-]
+
 
 const moves = document.getElementById("moves");
 const abilities = document.getElementById("abilities");
@@ -53,7 +46,7 @@ const GetPokemon = async (pokemon) => {
   console.log(pokeInfo);
   if (pokeInfo.id != null && parseInt(pokeInfo.id) < 650) {
     //Pokemon Info
-    pokeName.innerText = `${pokeInfo.name.charAt(0).toUpperCase()}${pokeInfo.name.slice(1)}`;
+    pokeName.innerText = CapitalizeFirstLetter(pokeInfo.name);
     pokeId.innerText = pokeInfo.id.toString().padStart(3, '0');
     moves.innerText = MapThroughData(pokeInfo, "moves", "move", "name").join(", ");
     abilities.innerText = MapThroughData(pokeInfo, "abilities", "ability", "name").join(", ");
@@ -88,21 +81,8 @@ const GetPokemon = async (pokemon) => {
 const MapThroughData = (object, var1, var2, var3) =>
   object[`${var1}`].map((arr) => arr[`${var2}`][`${var3}`]);
 
-const GetPokemonType = (data) => {
-    secondaryType.classList.add("hidden")
-    let typeArr = MapThroughData(data, "types", "type", "name")
-    console.log(typeArr.length)
-    console.log(typeArr[0])
-    console.log(pokeType[0].innerText)
-    for(let i = 0; i < typeArr.length;i++){
-        pokeType[i].innerText = typeArr[i];
-        let var1 = pokeType[i].innerText;
-        let var2 = pokeTypeImg[i];
-        GetTypeIcon(var1, var2)
-    }
-    if(typeArr.length>1){
-        secondaryType.classList.remove("hidden")
-    }
+const CapitalizeFirstLetter = (word) => {
+    return `${word.charAt(0).toUpperCase()}${word.slice(1)}`
 }
 
 const FindPokemonLocations = async(url) => {
@@ -114,20 +94,20 @@ const FindPokemonLocations = async(url) => {
     }
 }
 
-const FindPokemonEvolutions = async(pokemon) => {
-    let pokeSpecies = await GetSpeciesApiWithId(pokemon);
-    let pokeEvolution = await GetApiwithUrl(pokeSpecies.evolution_chain.url);
-    console.log(pokeEvolution.chain.species.name);
-    if (pokeEvolution.chain.evolves_to.length > 0) {
-      for (let i = 0; i < pokeEvolution.chain.evolves_to.length; i++) {
-        console.log(pokeEvolution.chain.evolves_to[i].species.name);
-        if (pokeEvolution.chain.evolves_to[i].evolves_to.length > 0) {
-          for (let j = 0; j < pokeEvolution.chain.evolves_to[i].evolves_to.length; j++)
-            console.log(pokeEvolution.chain.evolves_to[i].evolves_to[j].species.name);
-        }
-      }
-    }
-}
+// const FindPokemonEvolutions = async(pokemon) => {
+//     let pokeSpecies = await GetSpeciesApiWithId(pokemon);
+//     let pokeEvolution = await GetApiwithUrl(pokeSpecies.evolution_chain.url);
+//     console.log(pokeEvolution.chain.species.name);
+//     if (pokeEvolution.chain.evolves_to.length > 0) {
+//       for (let i = 0; i < pokeEvolution.chain.evolves_to.length; i++) {
+//         console.log(pokeEvolution.chain.evolves_to[i].species.name);
+//         if (pokeEvolution.chain.evolves_to[i].evolves_to.length > 0) {
+//           for (let j = 0; j < pokeEvolution.chain.evolves_to[i].evolves_to.length; j++)
+//             console.log(pokeEvolution.chain.evolves_to[i].evolves_to[j].species.name);
+//         }
+//       }
+//     }
+// }
 
 const SwapImg = () => {
   if (img1.src == pokeInfo.sprites.other["official-artwork"].front_default) {
@@ -140,3 +120,6 @@ const SwapImg = () => {
 };
 
 // GetPokemon("1")
+
+
+export {MapThroughData, CapitalizeFirstLetter}
