@@ -6,12 +6,77 @@
     <title>Document</title>
     <link rel="stylesheet" href="./src/output.css">
 </head>
-<body class="bg-red-500">
-    <input id="searchBarField" type="text" placeholder="Search Pokemon" maxlength="25" class="border-1 m-10">
+<body class="bg-[url(../assets/pokemonCenter.jpg)] bg-cover bg-no-repeat bg-center bg-fixed px-6">
+    <section id="searchBar" class="flex bg-[rgb(255,255,255,0.6)] mt-5 rounded-2xl">
+        <div id="favoriteTabBtn" class="border-[1.5px] border-r-0 rounded-l-2xl px-2 py-1 self-center">
+            <i class="fa-regular fa-bookmark fa-lg"></i>
+        </div>
+        <div id="randomBtn" class="border-[1.5px] px-1 py-1 self-center">
+            <i class="fa-solid fa-shuffle fa-lg"></i>
+        </div>
+        <div class="grow shrink border-y-[1.5px] border-x-0 py-1 self-center">
+            <input id="searchBarField" type="text" placeholder="Search Pokemon" maxlength="25" class="border-0 w-[100%] h-[100%] grow shrink pl-2">
+        </div>
+        <div class="px-5 border-[1.5px] rounded-r-2xl py-1 self-center">
+            <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+        </div>
+    </section>
+    <section id="bodyContent" class="grid gap-5 bg-[rgb(255,255,255,0.6)] border-[1.5px] rounded-2xl mt-3 mb-5">
+        <div id="nameSection" class="flex text-3xl mt-6 px-4">
+            <div>
+                <div id="notFav" class="">
+                    <i class="fa-regular fa-star fa-lg"></i>
+                </div>
+                <div id="isFav" class="hidden">
+                    <i class="fa-solid fa-star fa-lg hidden"></i>
+                </div>
+            </div>
+            <div class="grow text-center ">
+                <h1 id="pokeName">Pokemon</h1>
+            </div>
+            <div>
+                <h1 id="pokeId">000</h1>
+            </div>
+        </div>
+        <div id="imgSection" class="flex flex-col items-center px-16">
+            <img id="img1" src="" alt="pokemon">
+            <p id="form">Form: Default</p>
+        </div>
+        <div id="typeSection" class="flex justify-center px-2">
+            <div class="flex">
+                <img id="typeImg" src="" alt="pokemon type">
+                <h1 id="pokeType1">Type</h1>
+            </div>
+            <div id="secondaryType" class="hidden">
+                <img id="type2Img" src="" alt="pokemon 2nd type">
+                <h1 id="pokeType2">Type</h1>
+            </div>
+        </div>
+        <div id="evoSection" class="flex justify-center">
+            <div class="border-1 rounded-sm w-62 h-80 bg-[rgb(63,161,41,0.3)] self-center px-2 py-1">
+                <h1>Evolution Line:</h1>
+                <div id="evoBox" class="">
+                </div>
+            </div>
+        </div>
+        <div id="moveSection" class="bg-[rgb(255,0,0,0.6)] border-1 rounded-sm h-42 mx-8 px-2 py-1 overflow-y-scroll">
+            <h1>Moves:</h1>
+            <p id="moves"></p>
+        </div>
+        <div id="abilitySection" class="bg-[rgb(0,0,0,0.6)] border-1 rounded-sm text-white h-23 mx-8 px-2 py-1 overflow-y-scroll">
+            <h1>Abilities:</h1>
+            <p id="abilities"></p>
+        </div>
+        <div id="locationSection" class="bg-[rgb(255,255,255,0.6)] border-1 rounded-sm h-42 mb-6 mx-8 px-2 py-1 overflow-y-scroll">
+            <h1>Locations:</h1>
+            <p id="locations"></p>
+        </div>
+    </section>
     
-    <img id="img1" src="" alt="">
+    
 
     <script src="./scripts/app.js"></script>
+    <script src="https://kit.fontawesome.com/7f646c57fd.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.0.0/dist/flowbite.min.js"></script>
 </body>
 </html>
