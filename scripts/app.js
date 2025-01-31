@@ -88,8 +88,6 @@ const GetPokemon = async (pokemon) => {
 const MapThroughData = (object, var1, var2, var3) =>
   object[`${var1}`].map((arr) => arr[`${var2}`][`${var3}`]);
 
-
-
 const GetPokemonType = (data) => {
     secondaryType.classList.add("hidden")
     let typeArr = MapThroughData(data, "types", "type", "name")
@@ -106,7 +104,6 @@ const GetPokemonType = (data) => {
         secondaryType.classList.remove("hidden")
     }
 }
-
 
 const FindPokemonLocations = async(url) => {
     let pokeLocations = await GetApiwithUrl(url);
