@@ -142,7 +142,7 @@ const SwapImg = () => {
   }
 };
 
-// GetPokemon("1")
+GetPokemon("1")
 
 
 export {MapThroughData, CapitalizeFirstLetter}
