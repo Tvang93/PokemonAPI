@@ -41,6 +41,9 @@ const CreateEvoIcons = async(stage) => {
     let firstStageBox = document.createElement("div");
     for(let i = 0; i < stage.length; i++){
         let pokemonInfo = await GetPokemonInfoNoRestriction(stage[i]);
+        if(pokemonInfo.id > 649){
+            break;
+        }
         let firstStageImg = document.createElement("img");
         firstStageImg.src = pokemonInfo.sprites.other["official-artwork"].front_default;
         firstStageImg.classList = "max-w-15 lg:max-w-20";
